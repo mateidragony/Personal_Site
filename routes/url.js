@@ -11,7 +11,7 @@ const Url = require("../models/Url");
 // @desc    Create short URL
 router.post('/shorten', async (req, res) => {
     const {longUrl} = req.body;
-    const baseUrl = window.location.href;
+    const baseUrl = req.get('origin');
 
     if(!validUrl.isUri(baseUrl)){
         return res.status(401).json('Invalid base url');
