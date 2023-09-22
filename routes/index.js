@@ -4,7 +4,7 @@ const router = express.Router();
 const Url  = require("../models/Url");
 
 router.get("/", (req, res) => {
-    res.sendFile("/var/task/index.html");
+    res.sendFile(__dirname+"../index.html");
 });
 
 // @route   GET /:code
