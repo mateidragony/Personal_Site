@@ -4,8 +4,10 @@ const enter = document.getElementById("submit");
 
 enter.onclick = function(e){
 
+    console.log(window.location.href);
+
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:5000/api/url/shorten", true);
+    xhr.open("POST", window.location.href+"api/url/shorten", true);
     xhr.setRequestHeader("Content-Type", "application/json")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
