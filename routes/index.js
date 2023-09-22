@@ -3,6 +3,10 @@ const router = express.Router();
 
 const Url  = require("../models/Url");
 
+router.get("/", (req, res) => {
+    res.sendFile("../index.html");
+});
+
 // @route   GET /:code
 // @desc    Redirect to long url
 router.get('/:code', async (req, res) => {
@@ -19,10 +23,6 @@ router.get('/:code', async (req, res) => {
         console.error(err);
         res.status(500).json('Server error: Oops!');
     }
-});
-
-router.get("/", (req, res) => {
-    res.sendFile("../index.html");
 });
 
 module.exports = router;
