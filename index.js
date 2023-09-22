@@ -10,7 +10,7 @@ connectDB();
 app.use(cors({origin: true, credentials: true}));
 app.use(express.json({extended: false}));
 
-app.use("/assets", express.static("assets"));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 app.use('/', require("./routes/index"));
 app.use('/api/url', require("./routes/url"));
