@@ -17,7 +17,7 @@ router.get('/:code', async (req, res) => {
         if(url){
             return res.redirect(url.longUrl);
         } else {
-            return res.status(404).json('No url found');
+            return res.status(404).json({'res':'No url found'});
         }
 
     } catch(err){
