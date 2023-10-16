@@ -8,6 +8,10 @@ router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '/../index.html'));
 });
 
+router.get("/fish", (req, res) => {
+    res.sendFile(path.join(__dirname, '/../assets/fish.html'));
+});
+
 // @route   GET /:code
 // @desc    Redirect to long url
 router.get('/:code', async (req, res) => {
