@@ -12,6 +12,10 @@ router.get("/fish", (req, res) => {
     res.sendFile(path.join(__dirname, '/../assets/fish.html'));
 });
 
+router.get("/url-shortener", (req, res) => {
+    res.sendFile(path.join(__dirname, '/../assets/shorten.html'));
+});
+
 // @route   GET /:code
 // @desc    Redirect to long url
 router.get('/:code', async (req, res) => {

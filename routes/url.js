@@ -11,11 +11,8 @@ const Url = require("../models/Url");
 // @desc    Create short URL
 router.post('/shorten', async (req, res) => {
     const {longUrl} = req.body;
-    const baseUrl = req.get('origin');
-
-    if(!validUrl.isUri(baseUrl)){
-        return res.status(401).json('Invalid base url');
-    }
+    const baseUrl = validUrl.isUri(req.get('origin')) ? req.get('origin') : "http://localhost:5000";
+    console.log(baseUrl);
 
     // Generate Url code
     const urlCode = shortid.generate();
