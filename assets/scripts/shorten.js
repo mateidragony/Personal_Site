@@ -7,7 +7,8 @@ enter.onclick = function(e){
     console.log(window.location.href);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", window.location.href+"api/url/shorten", true);
+    let gobbledygook = (window.location.href+"").charAt((window.location.href+"").length-1) == '/' ? "api/url/shorten" : "/api/url/shorten";
+    xhr.open("POST", window.location.href+gobbledygook, true);
     xhr.setRequestHeader("Content-Type", "application/json")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
