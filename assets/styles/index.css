@@ -1,28 +1,184 @@
-.fa:hover, a:hover {
-    opacity: 0.7;
+/*
+ Black hole button 
+ Clusters of shooting stars
+ sun blows up and sucks evrything in
+*/
+
+:root{
+    --outline-color: #FFFFFF99; /* #FFFFFF99 */
+}
+
+@font-face {
+    font-family: pixelArt;
+    src: url("/assets/fonts/FFFFORWA.TTF");
 }
 
 
-@media (prefers-color-scheme: dark){
-    *, body, html{
-        background-color: rgb(24, 26, 27);
-    }
-    p, h1{
-        color: rgb(209, 205, 199);
-    }
-    a{
-        color: rgb(123, 190, 254);
-    }
+.planet{
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
 }
 
-@media (prefers-color-scheme: light){
-    *, body, html{
-        background-color: white;
+#mateiPlanet{
+    background-image: url("/assets/Images/sun.webp");
+    background-size:contain;
+}
+
+#projectsPlanet{
+    background-image: url("/assets/Images/earth_planet.webp");
+    background-size:contain;
+}
+#lamePlanet{
+    background-image: url("/assets/Images/mars_planet.webp");
+    background-size:contain;
+}
+#planet4{
+    background-image: url("/assets/Images/snow_planet.webp");
+    background-size:contain;
+}
+#planet5{
+    background-image: url("/assets/Images/ring_planet.webp");
+    background-size:contain;
+}
+#planet6{
+    background-image: url("/assets/Images/crater_planet.webp");
+    background-size:contain;
+}
+
+.planet-inner-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.banner{
+
+    position: absolute;
+    top: 35%;
+
+    display: flex;
+
+    min-width: 90%;
+    min-height: 100%;
+    background-image: url("/assets/Images/banner.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.planet-desc{
+
+    cursor:pointer;
+
+    line-height: 1.75;
+
+    text-align: center;
+    font-family: pixelArt;
+    color: black;
+    /* background-color: white; */
+    padding: 0px 5px;
+}
+
+.planet-desc, .galaxy{
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+
+.matei-logo > .planet-desc{
+
+    background-color: transparent;
+
+    font-size: min(calc(20px + 4.5vh), calc(20px + 4.5vw));
+
+    text-shadow: var(--outline-color) 0px 0px 20px,   var(--outline-color) 0px 0px 20px,   var(--outline-color) 0px 0px 20px,
+        var(--outline-color) 0px 0px 20px,   var(--outline-color) 0px 0px 20px,   var(--outline-color) 0px 0px 20px;
+
+    width: 60%;
+}
+
+.big-planet > .planet-desc{
+    font-size: min(calc(15px + 3.5vh), calc(15px + 3.5vw));
+
+    text-shadow: var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,
+        var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px;
+}
+
+.med-planet > .planet-desc{
+    font-size: min(calc(10px + 2.5vh), calc(10px + 2.5vw));
+
+    text-shadow: var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,
+        var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px;
+}
+
+.small-planet > .planet-desc{
+    font-size: min(calc(5px + 1.5vh), calc(5px + 1.5vw));
+    line-height: 200%;
+
+    text-shadow: var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,
+        var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px,   var(--outline-color) 0px 0px 10px;
+}
+
+
+/* .dancing-text span{
+    min-width: 5px;
+    padding: 1px;
+    display: inline-block;
+    position: relative;
+    white-space: pre;
+}
+
+.dancing-planet:hover .planet-inner-div .dancing-text span{
+    animation: spanDance 1s infinite;
+    animation-delay: calc(.08s * var(--i));
+}
+
+@keyframes spanDance {
+    0%, 40%, 100%{
+        transform: translateY(0);
     }
-    p, h1{
-        color: rgb(33, 37, 41);
+    20%{
+        transform: translateY(-20px);
     }
-    a{
-        color: rgb(13, 110, 253);
-    }
+} */
+
+.shrinking-planet:hover .planet-inner-div .planet-desc{
+    transition: transform ease-in-out 1s;
+    transform: scale(.7);
+}
+.shrinking-planet .planet-inner-div .planet-desc{
+    transition: transform ease-in-out .25s;
+    transform: scale(1);
+}
+
+
+.growing-planet:hover .planet-inner-div .planet-desc{
+    transition: transform ease-in-out .25s;
+    transform: scale(1.2);
+}
+.growing-planet .planet-inner-div .planet-desc{
+    transition: transform ease-in-out .25s;
+    transform: scale(1);
+}
+
+.banner{
+
+    background-image: url("/assets/Images/banner2.webp");
 }
