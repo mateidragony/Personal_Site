@@ -4,7 +4,7 @@ const PLANET_NAMES = ["Sun", "Earth", "Mars", "Snow", "Gas", "Crater"];
 
 const MAX_SPEED = 1;
 const HITBOX_LEEWAY = 0;
-const STABLE_ENERGY = MAX_SPEED * PLANET_NAMES.length;
+const STABLE_ENERGY = MAX_SPEED * MAX_SPEED * PLANET_NAMES.length;
 
 class Planet{
     constructor(x,y, div, id, name){
@@ -16,6 +16,7 @@ class Planet{
         this.yVel = MAX_SPEED * Math.sin(angle);
 
         this.div = div;
+        this.banner = this.div.getElementsByClassName("banner")[0];
         this.id = id;
 
         this.isPressed = false;
@@ -39,6 +40,10 @@ class Planet{
 
         this.div.style.left = this.x+"px";
         this.div.style.top = this.y+"px";
+
+        if(this.banner !== undefined){
+            this.banner.style.top = this.div.clientHeight* (3/4) - this.banner.clientHeight/2 + "px";
+        }
 
 
         // Collisions between planets .2, .15, .36
@@ -197,8 +202,8 @@ function initPlanets(){
 
     for(let i=0; i<planetDivs.length; i++){
         planets.push(new Planet(planetLocs[i][0], planetLocs[i][1],planetDivs[i], i));
-        let fontSize =  Math.sqrt(planetDivs[i].clientWidth * planetDivs[i].clientHeight)/(i===0 ? 13 : 11);
-        planetDivs[i].getElementsByClassName("planet-inner-div")[0].getElementsByClassName("planet-desc")[0].style.fontSize = fontSize+"px";
+        // let fontSize =  Math.sqrt(planetDivs[i].clientWidth * planetDivs[i].clientHeight)/(i===0 ? 13 : 11);
+        // planetDivs[i].getElementsByClassName("planet-inner-div")[0].getElementsByClassName("planet-desc")[0].style.fontSize = fontSize+"px";
     }
 
 }

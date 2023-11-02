@@ -51,7 +51,7 @@ function renderFrame(){
     animatePlanets();
     calculateAge();
 
-    if(plutoDesc != null)
-        plutoDesc.innerHTML = "I am<br>" + calculateAge().toFixed(9) + "<br>years old.";
+    // if(plutoDesc != null)
+    //     plutoDesc.innerHTML = "I am<br>" + calculateAge().toFixed(9) + "<br>years old.";
 }
 

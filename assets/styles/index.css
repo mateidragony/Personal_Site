@@ -10,7 +10,7 @@
 
 @font-face {
     font-family: pixelArt;
-    src: url("/assets/fonts/FFFFORWA.TTF");
+    src: url("/assets/fonts/pixel-comic-sans-undertale-sans-font.ttf");
 }
 
 
@@ -18,6 +18,7 @@
     position: fixed;
     left: 0;
     top: 0;
+    /* background-color: red; */
     border-radius: 100%;
     display: flex;
     justify-content: center;
@@ -62,18 +63,28 @@
 }
 
 .banner{
-
     position: absolute;
-    top: 35%;
+    top: 30%;
 
     display: flex;
+    justify-content: center;
+    align-items: center;
 
-    min-width: 90%;
-    min-height: 100%;
-    background-image: url("/assets/Images/banner.webp");
+    min-width: 100%;
+    
+
+    background-image: url("/assets/Images/banner2.webp");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.red-banner{
+    background-image: url("/assets/Images/banner3.webp");
+}
+
+.banner-svg{
+    width: 100%;
 }
 
 
@@ -102,7 +113,7 @@
 
 
 
-.matei-logo > .planet-desc{
+/* .matei-logo > .planet-desc{
 
     background-color: transparent;
 
@@ -137,27 +148,6 @@
 }
 
 
-/* .dancing-text span{
-    min-width: 5px;
-    padding: 1px;
-    display: inline-block;
-    position: relative;
-    white-space: pre;
-}
-
-.dancing-planet:hover .planet-inner-div .dancing-text span{
-    animation: spanDance 1s infinite;
-    animation-delay: calc(.08s * var(--i));
-}
-
-@keyframes spanDance {
-    0%, 40%, 100%{
-        transform: translateY(0);
-    }
-    20%{
-        transform: translateY(-20px);
-    }
-} */
 
 .shrinking-planet:hover .planet-inner-div .planet-desc{
     transition: transform ease-in-out 1s;
@@ -176,9 +166,4 @@
 .growing-planet .planet-inner-div .planet-desc{
     transition: transform ease-in-out .25s;
     transform: scale(1);
-}
-
-.banner{
-
-    background-image: url("/assets/Images/banner2.webp");
-}
+} */
