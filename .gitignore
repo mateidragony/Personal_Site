@@ -1,3 +1,4 @@
 # Config files
 config/default.json
 requests/
+*.py

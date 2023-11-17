@@ -1,19 +1,23 @@
 const planets = []
+const planetSpeeds = []
+
 const PLANET_NAMES = ["Sun", "Earth", "Mars", "Snow", "Gas", "Crater"];
 // const collisionCD = {}
 
-const MAX_SPEED = 1;
+let MAX_SPEED = 1;
+let STABLE_ENERGY = MAX_SPEED * MAX_SPEED * PLANET_NAMES.length;
+
 const HITBOX_LEEWAY = 0;
-const STABLE_ENERGY = MAX_SPEED * MAX_SPEED * PLANET_NAMES.length;
+
+// motionSetting.onclick = randPlanetVels;
+
 
 class Planet{
     constructor(x,y, div, id, name){
         this.x=x;
         this.y=y;
 
-        let angle = Math.random() * 2 * Math.PI;
-        this.xVel = MAX_SPEED * Math.cos(angle);
-        this.yVel = MAX_SPEED * Math.sin(angle);
+        this.initRandVel();
 
         this.div = div;
         this.banner = this.div.getElementsByClassName("banner")[0];
@@ -23,7 +27,18 @@ class Planet{
         this.timePressed = 0;
     }
 
+    initRandVel(){
+        let angle = Math.random() * 2 * Math.PI;
+        this.xVel = MAX_SPEED * Math.cos(angle);
+        this.yVel = MAX_SPEED * Math.sin(angle);
+    }
+
     animate(){
+
+        if(!motionSetting.checked){
+            this.xVel = 0;
+            this.yVel = 0;
+        }
 
         if(this.isPressed){
             this.timePressed++;
@@ -57,12 +72,12 @@ class Planet{
             this.y = 0;
             this.yVel *= -1;
         }
-        if(this.x + this.div.clientWidth >  main.clientWidth){
-            this.x = main.clientWidth - this.div.clientWidth;
+        if(this.x + this.div.clientWidth >  mainW){
+            this.x = mainW - this.div.clientWidth;
             this.xVel *= -1;
         }
-        if(this.y + this.div.clientHeight > main.clientHeight){
-            this.y = main.clientHeight - this.div.clientHeight;
+        if(this.y + this.div.clientHeight > mainH){
+            this.y = mainH - this.div.clientHeight;
             this.yVel *= -1;
         }
 
@@ -73,6 +88,8 @@ class Planet{
         this.y += this.yVel;
 
         let collisionPlanets = this.detectCollisions(planets);
+
+        if(!motionSetting.checked) collisionPlanets.length = 0;
 
         if(collisionPlanets.length != 0){
             this.x = oldX;
@@ -161,7 +178,7 @@ function initPlanets(){
 
     planets.length = 0;
 
-    const w = main.clientWidth, h = main.clientHeight;
+    const w = mainW, h = mainH;
     const totalArea = w * h;
 
     planetDivs[0].style.width = Math.sqrt((totalArea * .25) / Math.PI) * 2 + "px";
@@ -183,7 +200,7 @@ function initPlanets(){
     planetDivs[5].style.height = Math.sqrt((totalArea * .016) / Math.PI) * 2 + "px";
 
     const planetLocs = [];
-    if(main.clientWidth > main.clientHeight){
+    if(mainW > mainH){
         planetLocs.push([w/2 - planetDivs[0].clientWidth/2,h/2 - planetDivs[0].clientHeight/2]); // Matei Planet
         planetLocs.push([w/7 - planetDivs[1].clientWidth/2, 3*h/4 - planetDivs[1].clientHeight/2]); // Projects Planet
         planetLocs.push([6*w/7 - planetDivs[2].clientWidth/2, h/4 - planetDivs[2].clientHeight/2]); // Lame Planet
@@ -202,14 +219,50 @@ function initPlanets(){
 
     for(let i=0; i<planetDivs.length; i++){
         planets.push(new Planet(planetLocs[i][0], planetLocs[i][1],planetDivs[i], i));
-        // let fontSize =  Math.sqrt(planetDivs[i].clientWidth * planetDivs[i].clientHeight)/(i===0 ? 13 : 11);
-        // planetDivs[i].getElementsByClassName("planet-inner-div")[0].getElementsByClassName("planet-desc")[0].style.fontSize = fontSize+"px";
     }
 
 }
 
+function resetPlanetVels(){
+    for(let i=0; i<planets.length; ++i){
+        let p = planets[i];
+        p.xVel = planetSpeeds[i][0];
+        p.yVel = planetSpeeds[i][1];
+    }
+}
+
+function changePlanetVels(){
+
+    let speedUp = false;
+
+    if(MAX_SPEED == 1){
+        MAX_SPEED = 50;
+        speedUp = true;
+    } else 
+        MAX_SPEED = 1;
+    STABLE_ENERGY = MAX_SPEED * MAX_SPEED * PLANET_NAMES.length;
+
+    for(let i=0; i<planets.length; ++i){
+        let p = planets[i];
+
+        let speed = Math.sqrt(p.xVel * p.xVel + p.yVel * p.yVel);
+
+        let mult = speedUp ? 50 : 1;
+
+        p.xVel = p.xVel / speed * mult;
+        p.yVel = p.yVel / speed * mult;
+    }
+}
+
+
+
 function animatePlanets(){
-    planets.forEach(p => p.animate());
+    for(let i=0; i<planets.length; ++i){
+        let p = planets[i];
+        p.animate();
+        if(p.xVel != 0 && p.yVel != 0)
+            planetSpeeds[i] = [p.xVel, p.yVel];
+    }
 }
 
 

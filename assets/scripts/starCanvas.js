@@ -12,28 +12,29 @@ const MIN_STAR_SPEED = 25;
 const FRAMES_BETWEEN_SHOOTING_STARS = 150;
 const STAR_TWINKLE_SPEED = 0.4;
 const QUASAR_TWINKLE_SPEED = 0.02;
+const NUM_STARS = 200;
 
 let starFrameNumber = 0;
 
 function initStarFrame(){
     stars.length = 0;
-    for(let i=0; i<250; ++i)
-        stars.push(new Star(Math.random()*canvas.clientWidth,Math.random()*canvas.clientHeight,Math.random()*10 +1, Math.random()*.6 + .4));
+    for(let i=0; i<NUM_STARS; ++i)
+        stars.push(new Star(Math.random()*canvasW,Math.random()*canvasH,Math.random()*10 +1, Math.random()*.6 + .4));
 
     // do quasar stuffs
     if(drawQuasar){
-        let quasarSize = Math.sqrt((canvas.clientWidth*canvas.clientHeight)/4);
-        let quasarX = Math.min(50, main.clientWidth/2 - quasarSize/2);
+        let quasarSize = Math.sqrt((canvasW*canvasH)/4);
+        let quasarX = Math.min(50, canvasW/2 - quasarSize/2);
         stars.push(new Quasar(quasarX,50, quasarSize,.1));
     }
 
     // do galaxy stuffs
     if(galaxy !== null){
-        let galaxySize = Math.sqrt((canvas.clientWidth*canvas.clientHeight)/3);
+        let galaxySize = Math.sqrt((canvasW*canvasH)/3);
 
         galaxy.style.width = galaxySize+"px";
         // 1/3 is white space
-        galaxy.style.bottom = (-galaxySize/4)+canvas.clientWidth/50 + "px";
+        galaxy.style.bottom = (-galaxySize/4)+canvasW/50 + "px";
     }
 
     renderStarFrame();
@@ -43,11 +44,11 @@ function renderStarFrame(){
 
     starFrameNumber++;
 
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    canvas.width = canvasW;
+    canvas.height = canvasH;
 
-    const cw = canvas.clientWidth;
-    const ch = canvas.clientHeight;
+    const cw = canvasW;
+    const ch = canvasH;
 
     g.imageSmoothingEnabled = false;
 
@@ -68,16 +69,13 @@ function renderStarFrame(){
     if(starFrameNumber % FRAMES_BETWEEN_SHOOTING_STARS == 0){
         let angle = Math.random() * 2 * Math.PI;
         let speed = Math.random() * (MAX_STAR_SPEED - MIN_STAR_SPEED) + MIN_STAR_SPEED;
-        let starX = (canvas.clientWidth/2 + Math.random() * 500 - 250) - 1000 * Math.cos(angle);
-        let starY =  (canvas.clientHeight/2 + Math.random() * 500 - 250) - 1000 * Math.sin(angle);
+        let starX = (canvasW/2 + Math.random() * 500 - 250) - 1000 * Math.cos(angle);
+        let starY =  (canvasH/2 + Math.random() * 500 - 250) - 1000 * Math.sin(angle);
         stars.push(new ShootingStar(starX,starY,Math.random() * 150 + 100,Math.cos(angle) * speed, Math.sin(angle) * speed))
     }
 
     // g.drawImage(quasarImg, 10,10,200,200);
-
-    g.fillStyle="red";
-    g.font="20px sans-serif";
-    // g.fillText("w: "+canvas.clientWidth + ", h: "+canvas.clientHeight,1000,100);
+    // g.fillText("w: "+canvasW + ", h: "+canvasH,1000,100);
 }
 
 class Star{
@@ -106,11 +104,12 @@ class Star{
             }
         }
 
-        g.save();
-        g.filter = "hue-rotate(" + this.hue +"deg)";
-        g.globalAlpha = this.o;
-        g.drawImage(starImg,this.x,this.y,this.w,this.h);
-        g.restore();
+        // g.filter = "hue-rotate(" + this.hue +"deg)";
+        // g.globalAlpha = this.o;
+        g.fillStyle = "hsla("+this.hue+",15%,60%,"+this.o+")";
+        g.fillRect(this.x + this.w/2 - this.w/10, this.y, this.w/5 , this.h); // top to bottom
+        g.fillRect(this.x, this.y+this.h/2 - this.h/14, this.w, this.h/7) // left to right
+        g.fillRect(this.x + this.w/5, this.y + this.h * 2 / 7, this.w * 3 / 5, this.h * 3 / 7); // center rect
     }
 
     animate(){
@@ -118,7 +117,7 @@ class Star{
     }
 
     outOfBounds(){
-        return this.x<-1000 || this.y<-1000 || this.x>canvas.clientWidth+1000 || this.y > canvas.clientHeight+1000;
+        return this.x<-1000 || this.y<-1000 || this.x>canvasW+1000 || this.y > canvasH+1000;
     }
 }
 

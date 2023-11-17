@@ -1,0 +1,53 @@
+
+.settings-button, .info-button{
+
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    image-rendering:pixelated;
+    background-image: url('/assets/Images/info.webp');
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    border-radius: 5px;
+
+    aspect-ratio: 1;
+    width: min(3vh + 5px, 5vw + 5px);
+
+    transition: filter .1s;
+
+    z-index: 999;
+}
+
+.settings-button{
+    background-image: url('/assets/Images/settings.webp');
+    right: calc(10px +  min(3vh + 5px, 5vw + 5px) + 10px);
+}
+
+.settings-button:hover, .info-button:hover{
+    filter: brightness(75%)
+}
+
+.settings-title, .info-title{
+    color:white;
+    font-family: pixelArt;  
+    font-size: calc(1vw + 1.5rem);
+}
+
+.setting{
+    font-size: calc(.5vw + .75rem);
+    /* font-family: pixelArt;  */
+    color:lightgrey;
+}
+
+.setting-check{
+    transform: scale(1.25);
+    margin-right: 5px;
+}
+
+.info-text{
+    font-size: calc(.5vw + .75rem);
+    /* font-family: pixelArt;  */
+    color:lightgrey;
+}

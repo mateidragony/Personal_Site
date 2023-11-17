@@ -12,7 +12,13 @@ const plutoDesc = document.getElementById("pluto-desc");
 
 const dancingTexts = document.getElementsByClassName("dancing-text");
 
+// Settings
+const settings = document.getElementsByClassName("setting-check");
+const motionSetting = document.getElementById("planet-motion");
+const sonicSetting = document.getElementById("planet-speed");
+
 let mouseX, mouseY, prevMouseX, prevMouseY;
+let mainW, mainH, canvasW, canvasH;
 
 onmousemove = (e) => {
     prevMouseX = mouseX;
@@ -30,18 +36,25 @@ setInterval(renderFrame, 30);
 
 function loadIn(){
 
-    // Start Sun desc animation
-    // setTimeout(() => writeNewMsg(sunDesc), INIT_DELAY);
-
     addPlanetOnClick();
     initFrame();
     for(let i=0; i<planetDescs.length; ++i){
         planetDescs[i].setAttribute("ondragstart", "return false;")
     }
+    for(let i=0; i<settings.length; ++i){
+        settings[i].checked = false;
+    }
+    motionSetting.checked = true;
 
 }
 
 function initFrame(){
+
+    mainW = main.clientWidth;
+    mainH = main.clientHeight;
+    canvasW = canvas.clientWidth;
+    canvasH = canvas.clientHeight;
+
     initStarFrame();
     initPlanets();
 }
@@ -49,9 +62,7 @@ function initFrame(){
 function renderFrame(){
     renderStarFrame();
     animatePlanets();
-    calculateAge();
-
-    // if(plutoDesc != null)
-    //     plutoDesc.innerHTML = "I am<br>" + calculateAge().toFixed(9) + "<br>years old.";
 }
 
+motionSetting.onclick = resetPlanetVels;
+sonicSetting.onclick = changePlanetVels;

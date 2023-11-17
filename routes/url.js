@@ -10,9 +10,9 @@ const Url = require("../models/Url");
 // @route   POST /api/url/shorten
 // @desc    Create short URL
 router.post('/shorten', async (req, res) => {
+    console.log("LongUrl: "+req.body);
     const {longUrl} = req.body;
     const baseUrl = validUrl.isUri(req.get('origin')) ? req.get('origin') : "http://localhost:5000";
-    console.log(baseUrl);
 
     // Generate Url code
     const urlCode = shortid.generate();
@@ -33,6 +33,8 @@ router.post('/shorten', async (req, res) => {
 
                 await url.save();
             }
+
+            console.log("Url: "+url);
 
             res.json(url);
 
