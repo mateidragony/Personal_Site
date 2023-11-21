@@ -2,13 +2,13 @@ const canvas = document.getElementById("stars-bg");
 const g = canvas.getContext("2d");
 
 const main = document.getElementById("main");
-const planetDivs = document.getElementsByClassName("planet");
+// const planetDivs = document.getElementsByClassName("planet");
 
 const galaxy = document.getElementById("galaxy");
 
-const planetDescs = document.getElementsByClassName("planet-desc");
-const sunDesc = document.getElementById("sun-planet-desc");
-const plutoDesc = document.getElementById("pluto-desc");
+// const planetDescs = document.getElementsByClassName("planet-desc");
+// const sunDesc = document.getElementById("sun-planet-desc");
+// const plutoDesc = document.getElementById("pluto-desc");
 
 const dancingTexts = document.getElementsByClassName("dancing-text");
 
@@ -38,9 +38,9 @@ function loadIn(){
 
     addPlanetOnClick();
     initFrame();
-    for(let i=0; i<planetDescs.length; ++i){
-        planetDescs[i].setAttribute("ondragstart", "return false;")
-    }
+    // for(let i=0; i<planetDescs.length; ++i){
+    //     planetDescs[i].setAttribute("ondragstart", "return false;")
+    // }
     for(let i=0; i<settings.length; ++i){
         settings[i].checked = false;
     }
@@ -55,14 +55,26 @@ function initFrame(){
     canvasW = canvas.clientWidth;
     canvasH = canvas.clientHeight;
 
+    canvas.width = canvasW;
+    canvas.height = canvasH;
+
     initStarFrame();
     initPlanets();
 }
 
 function renderFrame(){
     renderStarFrame();
-    animatePlanets();
+    animatePlanets(g);
+
+    // g.fillStyle = "red";
+    // g.font = "bold 40px Arial";
+    // g.fillText("S: "+ selectedPlanet, 10,100);
 }
 
 motionSetting.onclick = resetPlanetVels;
 sonicSetting.onclick = changePlanetVels;
+
+
+canvas.onmousedown = planetMouseDown;
+canvas.onclick = planetOnClick;
+canvas.onmouseup = planetMouseUp;

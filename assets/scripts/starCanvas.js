@@ -12,7 +12,9 @@ const MIN_STAR_SPEED = 25;
 const FRAMES_BETWEEN_SHOOTING_STARS = 150;
 const STAR_TWINKLE_SPEED = 0.4;
 const QUASAR_TWINKLE_SPEED = 0.02;
-const NUM_STARS = 200;
+const NUM_STARS = 150;
+
+const STAR_COLORS = ["#F8FFC1", "#D9FFC1", "#FFD8C1", "#FFC1C1", "#C1FFED", "#C1CEFF", "#E2C1FF", "#C7FFC1"];
 
 let starFrameNumber = 0;
 
@@ -44,15 +46,12 @@ function renderStarFrame(){
 
     starFrameNumber++;
 
-    canvas.width = canvasW;
-    canvas.height = canvasH;
-
     const cw = canvasW;
     const ch = canvasH;
 
     g.imageSmoothingEnabled = false;
 
-    g.fillStyle = "rgba(0,0,0,0)";
+    g.fillStyle = "#000";
     g.fillRect(0,0,cw,ch);
 
     for(let i=0; i<stars.length; ++i){
@@ -86,7 +85,7 @@ class Star{
         this.h=w+1;
         this.o=o;
         this.increasingOpacity = true;
-        this.hue = Math.random() * 360;
+        this.color = STAR_COLORS[~~(Math.random() * STAR_COLORS.length)];
     }
 
     draw(g){
@@ -104,12 +103,13 @@ class Star{
             }
         }
 
-        // g.filter = "hue-rotate(" + this.hue +"deg)";
-        // g.globalAlpha = this.o;
-        g.fillStyle = "hsla("+this.hue+",15%,60%,"+this.o+")";
+        g.fillStyle = this.color;
+
+        g.globalAlpha = this.o;
         g.fillRect(this.x + this.w/2 - this.w/10, this.y, this.w/5 , this.h); // top to bottom
         g.fillRect(this.x, this.y+this.h/2 - this.h/14, this.w, this.h/7) // left to right
         g.fillRect(this.x + this.w/5, this.y + this.h * 2 / 7, this.w * 3 / 5, this.h * 3 / 7); // center rect
+        g.globalAlpha = 1;
     }
 
     animate(){
@@ -118,6 +118,17 @@ class Star{
 
     outOfBounds(){
         return this.x<-1000 || this.y<-1000 || this.x>canvasW+1000 || this.y > canvasH+1000;
+    }
+
+    hslaToRgba(h, s, l){
+        l /= 100;
+        const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
     }
 }
 
@@ -136,8 +147,6 @@ class ShootingStar extends Star{
         g.translate(-(this.x + this.w/2), -(this.y + this.h/2)); // reset origin
         g.drawImage(shootingStarImg,this.x,this.y,this.w,this.h); // draws a chain link or dagger
         g.restore(); // restore original states (no rotation etc)
-        // g.fillStyle = "red";
-        // g.fillRect(this.x,this.y,this.w,this.h);
     }
 
     animate(){
