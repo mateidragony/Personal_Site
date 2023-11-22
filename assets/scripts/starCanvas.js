@@ -31,13 +31,13 @@ function initStarFrame(){
     }
 
     // do galaxy stuffs
-    if(galaxy !== null){
-        let galaxySize = Math.sqrt((canvasW*canvasH)/3);
+    // if(galaxy != undefined){
+    //     let galaxySize = Math.sqrt((canvasW*canvasH)/3);
 
-        galaxy.style.width = galaxySize+"px";
-        // 1/3 is white space
-        galaxy.style.bottom = (-galaxySize/4)+canvasW/50 + "px";
-    }
+    //     galaxy.style.width = galaxySize+"px";
+    //     // 1/3 is white space
+    //     galaxy.style.bottom = (-galaxySize/4)+canvasW/50 + "px";
+    // }
 
     renderStarFrame();
 }
@@ -53,6 +53,8 @@ function renderStarFrame(){
 
     g.fillStyle = "#000";
     g.fillRect(0,0,cw,ch);
+
+    if(!starAnimateSetting.checked) return;
 
     for(let i=0; i<stars.length; ++i){
         stars[i].animate();
@@ -75,6 +77,8 @@ function renderStarFrame(){
 
     // g.drawImage(quasarImg, 10,10,200,200);
     // g.fillText("w: "+canvasW + ", h: "+canvasH,1000,100);
+    // g.fillStyle = "white";
+    // g.fillRect(0,0,100000,1000000);
 }
 
 class Star{

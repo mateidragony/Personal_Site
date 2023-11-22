@@ -1,7 +1,11 @@
 const planets = []
-const planetSpeeds = []
 
 const PLANET_NAMES = ["Sun", "Earth", "Mars", "Snow", "Gas", "Crater"];
+
+const PLANET_TOOLTIPS = ["About Me", "My Projects", "My Professional Information", "My Geometry Dash Statistics", "My Spotify Information", "Very Very Important..."];
+const PLANET_HREF = ["/assets/home-subpages/about.html", "/assets/home-subpages/projects.html", "/assets/home-subpages/professional.html",
+                     "/assets/home-subpages/gd.html", "/assets/home-subpages/music.html", "/assets/home-subpages/age.html"];
+
 const PLANET_IMAGES = [new Image(),new Image(),new Image(),new Image(),new Image(),new Image()];
 PLANET_IMAGES[0].src = "/assets/Images/sun.webp";
 PLANET_IMAGES[1].src = "/assets/Images/earth_planet.webp";
@@ -10,6 +14,13 @@ PLANET_IMAGES[3].src = "/assets/Images/snow_planet.webp";
 PLANET_IMAGES[4].src = "/assets/Images/ring_planet.webp";
 PLANET_IMAGES[5].src = "/assets/Images/crater_planet.webp";
 
+const BANNER_IMAGES = [new Image(),new Image(),new Image(),new Image(),new Image(),new Image()];
+BANNER_IMAGES[0].src = "/assets/Images/banners/about-banner.webp";
+BANNER_IMAGES[1].src = "/assets/Images/banners/projects-banner.webp";
+BANNER_IMAGES[2].src = "/assets/Images/banners/professional-banner.webp";
+BANNER_IMAGES[3].src = "/assets/Images/banners/gd-banner.webp";
+BANNER_IMAGES[4].src = "/assets/Images/banners/music-banner.webp";
+BANNER_IMAGES[5].src = "/assets/Images/banners/important-banner.webp";
 
 let MAX_SPEED = 1;
 let STABLE_ENERGY = MAX_SPEED * MAX_SPEED * PLANET_NAMES.length;
@@ -17,6 +28,7 @@ let STABLE_ENERGY = MAX_SPEED * MAX_SPEED * PLANET_NAMES.length;
 const HITBOX_LEEWAY = 0;
 
 let selectedPlanet = -1;
+let prevSelected = -1;
 let prevTimePressed = 0;
 
 class Planet{
@@ -33,6 +45,8 @@ class Planet{
 
         this.isPressed = false;
         this.timePressed = 0;
+        this.timeHovered = 0;
+
     }
 
     initRandVel(){
@@ -43,16 +57,37 @@ class Planet{
 
     draw(g){
         g.drawImage(PLANET_IMAGES[this.id], this.x, this.y, this.w, this.h);
-        // g.fillText(""+this.zIndex+", "+this.id, this.x, this.y);
+        g.drawImage(BANNER_IMAGES[this.id], this.x, this.y + this.h * (3/4) - (this.w * 387 / 1843)/2, this.w, this.w * 387 / 1843);
+
+        // Draw tooltip
+        if(dist([mouseX, mouseY], [this.x+this.w/2, this.y+this.h/2]) <= this.w/2){
+            this.timeHovered++;
+            if(this.timeHovered >= 20){
+                let tooltipMeasure = g.measureText(PLANET_TOOLTIPS[this.id]);
+                let hrefMeasure = g.measureText(PLANET_HREF[this.id]);
+
+                g.globalAlpha = (this.timeHovered - 20) / 5;
+                g.font = "normal 12px arial";
+
+                g.fillStyle = "black";
+                g.fillRect(mouseX, mouseY - 15, tooltipMeasure.width + 10, 20);
+                g.fillRect(0, canvasH-20, hrefMeasure.width + 10, 20);
+
+                g.strokeStyle = "#999999";
+                g.strokeRect(mouseX, mouseY - 15, tooltipMeasure.width + 10, 20);
+                
+                g.fillStyle = "#FFD8C1";
+                g.fillText(PLANET_TOOLTIPS[this.id], mouseX+5, mouseY);
+                g.fillText(PLANET_HREF[this.id], 5, canvasH-5);
+                
+                g.globalAlpha = 1;
+            }
+        } else{
+            this.timeHovered = 0;
+        }
     }
 
     animate(){
-
-        if(!motionSetting.checked){
-            this.xVel = 0;
-            this.yVel = 0;
-            return;
-        }
 
         if(this.isPressed){
             this.timePressed++;
@@ -60,16 +95,17 @@ class Planet{
             this.x = mouseX - this.w/2;
             this.y = mouseY - this.h/2;
 
-            this.xVel = mouseX - prevMouseX;
-            this.yVel = mouseY - prevMouseY;
+            if(motionSetting.checked){
+                this.xVel = mouseX - prevMouseX;
+                this.yVel = mouseY - prevMouseY;
+            }
             return;
         } else
             this.timePressed = 0;
 
-
-        // if(this.banner !== undefined){
-        //     this.banner.style.top = this.h* (3/4) - this.banner.clientHeight/2 + "px";
-        // }
+        if(!motionSetting.checked){
+            return;
+        }
 
 
         // Collisions with waLLs
@@ -221,16 +257,9 @@ function initPlanets(){
 
     for(let i=0; i<6; i++){
         planets.push(new Planet(planetLocs[i][0], planetLocs[i][1],planetSizes[i][0], planetSizes[i][1], i));
+        // banners[i].style.width = planetSizes[i][0]+"px";
     }
 
-}
-
-function resetPlanetVels(){
-    for(let i=0; i<planets.length; ++i){
-        let p = planets[i];
-        p.xVel = planetSpeeds[i][0];
-        p.yVel = planetSpeeds[i][1];
-    }
 }
 
 function changePlanetVels(){
@@ -266,9 +295,10 @@ function animatePlanets(g){
         let p = planets[i];
         p.animate();
         p.draw(g);
-        if(p.xVel != 0 && p.yVel != 0)
-            planetSpeeds[i] = [p.xVel, p.yVel];
     }
+
+    if(anyPlanetHovered()) canvas.style.cursor = "pointer";
+    else canvas.style.cursor = "initial";
 }
 
 function planetMouseDown(e){
@@ -291,40 +321,25 @@ function planetMouseUp(e){
     p.zIndex = p.id;
     p.isPressed = false;
     prevTimePressed = p.timePressed;
+    prevSelected = selectedPlanet;
     selectedPlanet = -1;
 }
 function planetOnClick(e){
     // console.log(prevTimePressed);
-    if(prevTimePressed > 4) e.preventDefault();
-}
-
-function addPlanetOnClick(){
-    // for(let i=0; i < 6; i++){
-    //     let p = planetDivs[i];
-    //     p.onmousedown = (e) => {
-    //         if(noPlanetPressed()){
-    //             e.preventDefault();
-    //             planets[i].isPressed = true;
-    //             p.style.zIndex = "10";
-    //         }
-    //         console.log(planets[i].timePressed);
-    //     };
-
-    //     p.onmouseup = (e) => {
-    //         planets[i].isPressed = false;
-    //         p.style.zIndex = "auto";
-    //     };
-
-    //     p.onclick = (e) => {if(planets[i].timePressed > 4) e.preventDefault();}; // prevent link from redirecting if users want to fuck around
-    // }
+    if(prevTimePressed <= 4){
+        window.location.href = PLANET_HREF[getPlanetById(prevSelected).id];
+    }
 }
 
 
 function noPlanetPressed(){
-    for(let i=0; i<planets.length; i++)
-        if(planets[i].isPressed)
-            return false;
+    for(let i=0; i<planets.length; i++) if(planets[i].isPressed) return false;
     return true;
+}
+
+function anyPlanetHovered(){
+    for(let i=0; i<planets.length; ++i) if(planets[i].timeHovered > 0) return true;
+    return false;
 }
 
 function unPressAllPlanets(){
@@ -332,6 +347,7 @@ function unPressAllPlanets(){
         planets[i].isPressed = false;
         planets[i].zIndex = planets[i].id;
     }
+    selectedPlanet = -1;
 }
 
 function getPlanetById(id){

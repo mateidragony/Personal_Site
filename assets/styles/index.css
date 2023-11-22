@@ -4,21 +4,17 @@
  sun blows up and sucks evrything in
 */
 
-:root{
-    --outline-color: #FFFFFF99; /* #FFFFFF99 */
-}
-
 @font-face {
     font-family: pixelArt;
     src: url("/assets/fonts/pixel-comic-sans-undertale-sans-font.ttf");
 }
 
+/* 
 
 .planet{
     position: fixed;
     left: 0;
     top: 0;
-    /* background-color: red; */
     border-radius: 100%;
     display: flex;
     justify-content: center;
@@ -27,32 +23,6 @@
     text-decoration: none;
 
     cursor: pointer;
-}
-
-#mateiPlanet{
-    background-image: url("/assets/Images/sun.webp");
-    background-size:contain;
-}
-
-#projectsPlanet{
-    background-image: url("/assets/Images/earth_planet.webp");
-    background-size:contain;
-}
-#lamePlanet{
-    background-image: url("/assets/Images/mars_planet.webp");
-    background-size:contain;
-}
-#planet4{
-    background-image: url("/assets/Images/snow_planet.webp");
-    background-size:contain;
-}
-#planet5{
-    background-image: url("/assets/Images/ring_planet.webp");
-    background-size:contain;
-}
-#planet6{
-    background-image: url("/assets/Images/crater_planet.webp");
-    background-size:contain;
 }
 
 .planet-inner-div{
@@ -97,16 +67,15 @@
     text-align: center;
     font-family: pixelArt;
     color: black;
-    /* background-color: white; */
     padding: 0px 5px;
-}
+} */
 
-.planet-desc, .galaxy{
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
-}
+/* .planet-desc, .galaxy{ */
+    /* -webkit-touch-callout: none; iOS Safari */
+      /* -webkit-user-select: none; Safari */
+       /* -khtml-user-select: none; Konqueror HTML */
+         /* -moz-user-select: none; Old versions of Firefox */
+          /* -ms-user-select: none; Internet Explorer/Edge */
+              /* user-select: none; /* Non-prefixed version, currently */
+                                    /* supported by Chrome, Edge, Opera and Firefox */ 
+/* } */
